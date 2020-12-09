@@ -1,49 +1,28 @@
 .__LoginPage{
-    min-height: 100vh;
-    padding: 8em 0;
-    .__left{
-        border-right: 0.4em solid $primary;
-        width: 50%;
-        .__title{
-            font-size: 3em;
-            font-weight: bolder;
-            font-family: 'Josefin Sans', sans-serif;
+    max-width: 330px;
+    margin: 5em auto;
+    .__title{
+        font-size: 3em;
+        font-weight: bolder;
+        font-family: 'Josefin Sans', sans-serif;
+        margin: 0 0 1em 0;
+    }
+    .__input, .__btn{
+        margin-top: 2em;
+        &:first-child{
+            margin-top: 1em;
         }
     }
-    .__right{
-        width: 20em;
-        margin: auto;
-        .__input, .__btn{
-            margin-top: 1.6em;
-        }
-        .__title{
-            margin: 0 0 2em 0;
-        }
+    .__subtitle{
+        margin: 0 0 1em 0;
     }
-    .__toggle{
-        text-align: right;
-        margin-top: 0.5em;
-    }
-    @media (max-width: 800px) {
-        padding: 10%;
-        display: block;
-        .__right{
-            width: auto;
-        }
-        .__left{
-            width: auto;
-            display: block;
-            border: none;
-            .__title{
-                margin: 0 0 1em 0;
-            }
-        }
+    .__link{
+        float: right;
+        margin-top: 0.2em;
     }
     @media (max-width: 350px) {
-        .__left{
-            .__title{
-                font-size: 2.4em;
-            }
+        .__title{
+            font-size: 2.4em;
         }
     }
 }

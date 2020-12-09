@@ -1,5 +1,6 @@
-import Input from "../../ui/Input";
-import checkValidity from "../../utility/checkValidity";
+import { Link } from "react-router-dom";
+import Input from "../ui/Input";
+import checkValidity from "../utility/checkValidity";
 
 const LoginPage = props => {
     const onSubmit = e => {
@@ -10,12 +11,10 @@ const LoginPage = props => {
         if (!isValid) return;
     }
     return (
-        <div className='__LoginPage __flex-stretch'>
-            <div className='__left __column __align-center __flex-center'>
-                <h1 className='__title'>MERN App</h1>
-            </div>
-            <form className='__right' onSubmit={onSubmit} autoComplete='Off'>
-                <h2 className='__title'>Welcome Back</h2>
+        <div className='__LoginPage'>
+            <h1 className='__title'>MERN App</h1>
+            <h2 className='__subtitle'>Welcome Back</h2>
+            <form onSubmit={onSubmit} autoComplete='Off'>
                 <Input type='text'
                     name='email'
                     placeholder='Email'
@@ -30,6 +29,7 @@ const LoginPage = props => {
                 />
                 <button className='__btn __full'>Sign In</button>
             </form>
+            <Link to='/sign-up' className='__link'>Create an account</Link>
         </div>
     )
 }
