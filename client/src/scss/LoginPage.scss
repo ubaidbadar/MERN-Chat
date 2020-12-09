@@ -1,6 +1,7 @@
 .__LoginPage{
-    max-width: 330px;
+    width: 330px;
     margin: 5em auto;
+    // width: calc(100% - 10em);
     .__title{
         font-size: 3em;
         font-weight: bolder;
@@ -20,7 +21,9 @@
         float: right;
         margin-top: 0.2em;
     }
-    @media (max-width: 350px) {
+    @media (max-width: 400px) {
+        margin: 10%;
+        width: initial;
         .__title{
             font-size: 2.4em;
         }
