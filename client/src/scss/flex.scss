@@ -1,12 +1,11 @@
-.__flex{
+.__flex, .__flex-stretch, .__column{
     display: flex;
+}
+.__flex{
     align-items: center;
 }
 .__sb{
     justify-content: space-between;
-}
-.__flex-stretch, .__column{
-    display: flex;
 }
 .__flex-center{
     justify-content: center;
@@ -16,4 +15,7 @@
 }
 .__f1{
     flex: 1;
+}
+.__column{
+    flex-direction: column;
 }

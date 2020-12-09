@@ -1,0 +1,90 @@
+.__input, .__btn{
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  border-radius: 0.3em;
+  outline: none;
+}
+.__input{
+  border: 2px solid $primary;
+  padding: 0.7em 1em;
+  background: rgba($color: $primary, $alpha: 0.15);
+  &::placeholder{
+    color: $primary;
+  }
+  &.__full{
+    width: 100%;
+  }
+  &.__invalid{
+    border-color: $danger;
+    background: rgba($color: $danger, $alpha: 0.15);
+    &::placeholder{
+      color: $danger;
+    }
+    +.__error{
+      visibility: visible;
+    }
+  }
+}
+.__btn{
+  border: none;
+  padding: calc(0.7em + 2px) 1em;
+  background: $primary;
+  color: #fff;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: background-color .3s;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%; 
+    width: 0;
+    padding-top: 0;
+    border-radius: 100%;
+    background-color: rgba(236, 240, 241, .3);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  &:active:before {
+    width: 120%;
+    padding-top: 120%;
+    transition: width .2s ease-out, padding-top .2s ease-out;
+  }
+  &.__full{
+    width: 100%;
+  }
+  > * {
+    position: relative;
+  }
+  &:hover{
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+  }
+}
+
+  .__primary{
+    color: $primary;
+  }
+  .__error{
+    color: $danger;
+    font-size: 0.8em;
+    font-weight: 500;
+    margin-top: 0.4em;
+    visibility: hidden;
+  }
+
+  @keyframes Pulse{
+    0%{
+      transform: scale(0);
+    }
+    100%{
+      transform: scale(1);
+    }
+  }
