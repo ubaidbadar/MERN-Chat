@@ -1,7 +1,7 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 
 const authWrapper = WrappedComponent => {
-    
+
     const App = props => {
         const [user, setUser] = useState(null);
         let timer = interval => setTimeout(() => {
@@ -11,8 +11,10 @@ const authWrapper = WrappedComponent => {
         const addLogoutTimmer = () => {
             const time = new Date().getTime();
             const user = JSON.parse(localStorage.getItem('user'));
-            timer(user.expiresIn - time);
-            setUser(user);
+            if (user) {
+                timer(user.expiresIn - time);
+                setUser(user);
+            }
         }
 
         const onLogin = user => {
@@ -32,7 +34,7 @@ const authWrapper = WrappedComponent => {
                 clearInterval(timer);
             }
         }, []);
-        
+
         return <WrappedComponent user={user} onLogin={onLogin} onLogout={onLogout} {...props} />;
     }
 

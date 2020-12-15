@@ -1,11 +1,17 @@
+import { useState, Fragment, useContext } from "react";
 import { Link } from "react-router-dom";
 import Input from "../ui/Input";
 import checkValidity from "../utility/checkValidity";
-import { useState } from "react";
-import option from "../utility/option";
+import AuthContext from '../context/auth';
+import { signup } from "../apis/auth";
 
 const SignUpPage = props => {
-    const [err, setError] = useState();
+    const { onLogin } = useContext(AuthContext);
+
+    const [status, setStatus] = useState("");
+
+    const onError = error => setStatus(error.message);
+
     const onSubmit = e => {
         e.preventDefault();
         const { email, password, displayName } = e.target;
@@ -13,17 +19,9 @@ const SignUpPage = props => {
         isValid = checkValidity(password) && isValid;
         isValid = checkValidity(displayName) && isValid;
         if (!isValid) return;
-        const data = option({
-            email: email.value,
-            password: password.value,
-            displayName: displayName.value,
-        })
-        fetch('http://localhost:5000/sign-up', data)
-            .then(res => res.json())
-            .then(res => console.log(res))
-            .catch(err => console.log(err, 'abc', err.statusCode))
+        setStatus("loading");
+        signup(email.value, password.value, displayName.value, onLogin, onError);
     }
-    console.log(err);
     return (
         <div className='__LoginPage'>
             <h1 className='__title'>MERN App</h1>
@@ -47,7 +45,12 @@ const SignUpPage = props => {
                     pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
                     error="Must have at least a number, a uppercase and lowercase letter, and 6 or more characters"
                 />
-                <button className='__btn __full'>Register Now</button>
+                {status === 'loading' ? <div className='__loader-container'> <div className='__spinner'></div> </div> : (
+                    <Fragment>
+                        <div className='__error __error-message'>{status}</div>
+                        <button className='__btn __full'>Register Now</button>
+                    </Fragment>
+                )}
                 <Link to='/sign-in' className='__link'>Already have an account</Link>
             </form>
         </div>

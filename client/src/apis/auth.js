@@ -10,3 +10,14 @@ export const signin = (email, password, onSignIn, onError) => {
         })
         .catch(onError);
 }
+
+export const signup = (email, password, displayName, onSignIn, onError) => {
+    const auth = option({ email, password, displayName });
+    return fetch(`${apiURL}/sign-up`, auth)
+        .then(async res => {
+            const data = await res.json();
+            res.status === 201 ? onSignIn(data) : onError(data);
+            console.log(data);
+        })
+        .catch(onError);
+}

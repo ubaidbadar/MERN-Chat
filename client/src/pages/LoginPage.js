@@ -9,10 +9,7 @@ const LoginPage = props => {
     const { onLogin } = useContext(AuthContext);
     const [status, setStatus] = useState("");
 
-    const onError = error => {
-        console.log(error)
-        setStatus(error.message)
-    };
+    const onError = error => setStatus(error.message)
 
     const onSubmit = e => {
         e.preventDefault();
