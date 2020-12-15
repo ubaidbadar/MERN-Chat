@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import Input from "../ui/Input";
 import checkValidity from "../utility/checkValidity";
+import { useState } from "react";
+import option from "../utility/option";
 
 const SignUpPage = props => {
+    const [err, setError] = useState();
     const onSubmit = e => {
         e.preventDefault();
         const { email, password, displayName } = e.target;
@@ -10,11 +13,21 @@ const SignUpPage = props => {
         isValid = checkValidity(password) && isValid;
         isValid = checkValidity(displayName) && isValid;
         if (!isValid) return;
+        const data = option({
+            email: email.value,
+            password: password.value,
+            displayName: displayName.value,
+        })
+        fetch('http://localhost:5000/sign-up', data)
+            .then(res => res.json())
+            .then(res => console.log(res))
+            .catch(err => console.log(err, 'abc', err.statusCode))
     }
+    console.log(err);
     return (
         <div className='__LoginPage'>
             <h1 className='__title'>MERN App</h1>
-                <h2 className='__subtitle'>Create an account</h2>
+            <h2 className='__subtitle'>Create an account</h2>
             <form className='__right' onSubmit={onSubmit} autoComplete='Off'>
                 <Input type='text'
                     name='displayName'

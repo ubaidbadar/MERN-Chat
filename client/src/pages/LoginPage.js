@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Input from "../ui/Input";
 import checkValidity from "../utility/checkValidity";
+import option from "../utility/option";
 
 const LoginPage = props => {
     const onSubmit = e => {
@@ -9,6 +10,14 @@ const LoginPage = props => {
         let isValid = checkValidity(email);
         isValid = checkValidity(password) && isValid;
         if (!isValid) return;
+        const data = option({
+            email: email.value,
+            password: password.value,
+        });
+        fetch('http://localhost:5000/sign-in', data)
+            .then(res => res.json())
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
     }
     return (
         <div className='__LoginPage'>
