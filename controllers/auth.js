@@ -4,8 +4,9 @@ const jwt = require('jsonwebtoken');
 const generateError = require('../utility/generateError');
 
 const signInHandler = ({ email, _id, displayName, photoURL }) => {
+    const expiresIn = new Date().getTime() + (60 * 60 * 1000);
     const token = jwt.sign({ email, userId: _id.toString() }, "ja-ja-k-km-kr", { expiresIn: "1h" });
-    return { userId: _id, displayName, email, photoURL, token };
+    return { userId: _id, displayName, email, photoURL, token, expiresIn };
 }
 
 exports.signup = (req, res, next) => {

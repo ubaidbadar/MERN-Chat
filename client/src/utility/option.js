@@ -1,4 +1,4 @@
-const option = (data, method = 'POST') => ({
+const option = (data = {}, method = 'POST') => ({
     method,
     body: JSON.stringify(data),
     headers: {

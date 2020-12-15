@@ -7,11 +7,19 @@
         font-family: 'Josefin Sans', sans-serif;
         margin: 0 0 1em 0;
     }
-    .__input, .__btn{
+    .__input{
         margin-top: 2em;
         &:first-child{
             margin-top: 1em;
         }
+    }
+    .__error-message{
+        margin: 2.5em 0;
+    }
+    .__loader-container{
+        margin: 5em 0 3em 0;
+        text-align: center;
+        font-size: 0.3em;
     }
     .__subtitle{
         margin: 0 0 1em 0;

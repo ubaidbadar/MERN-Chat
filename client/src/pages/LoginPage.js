@@ -1,25 +1,27 @@
-import { useState } from "react";
+import { useState, useContext, Fragment } from "react";
 import { Link } from "react-router-dom";
+import { signin } from "../apis/auth";
 import Input from "../ui/Input";
 import checkValidity from "../utility/checkValidity";
-import option from "../utility/option";
+import AuthContext from '../context/auth';
 
 const LoginPage = props => {
-    const [error, setError] = useState(null);
+    const { onLogin } = useContext(AuthContext);
+    const [status, setStatus] = useState("");
+
+    const onError = error => {
+        console.log(error)
+        setStatus(error.message)
+    };
+
     const onSubmit = e => {
         e.preventDefault();
         const { email, password } = e.target;
         let isValid = checkValidity(email);
         isValid = checkValidity(password) && isValid;
         if (!isValid) return;
-        const data = option({
-            email: email.value,
-            password: password.value,
-        });
-        fetch('http://localhost:5000/sign-in', data)
-            .then(res => res.json())
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
+        setStatus("loading");
+        signin(email.value, password.value, onLogin, onError)
     }
     return (
         <div className='__LoginPage'>
@@ -38,7 +40,13 @@ const LoginPage = props => {
                     pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
                     error="Must have at least a number, a uppercase and lowercase letter, and 6 or more characters"
                 />
-                <button className='__btn __full'>Sign In</button>
+                {status === 'loading' ? <div className='__loader-container'> <div className='__spinner'></div> </div> : (
+                    <Fragment>
+                        <div className='__error __error-message'>{status}</div>
+                        <button className='__btn __full'>Sign In</button>
+                    </Fragment>
+                )}
+
             </form>
             <Link to='/sign-up' className='__link'>Create an account</Link>
         </div>
