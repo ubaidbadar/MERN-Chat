@@ -7,10 +7,13 @@ const Input = props => {
         isFirstTime = false;
         checkValidity(target);
     }
-    const onInput = e => !isFirstTime && validationHandler(e);
+    const onChange = e => {
+        (!isFirstTime || e.target.classList.contains('__invalid')) && validationHandler(e);
+        props.onChange && props.onChange(e);
+    }
     return (
         <Fragment>
-            <input className='__input __full' {...props} onBlur={validationHandler} onInput={onInput} />
+            <input className='__input __full' {...props} onBlur={validationHandler} onChange={onChange} />
             <div className='__error'>{props.error}</div>
         </Fragment>
     )

@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import Input from "../ui/Input";
 import checkValidity from "../utility/checkValidity";
 import option from "../utility/option";
 
 const LoginPage = props => {
+    const [error, setError] = useState(null);
     const onSubmit = e => {
         e.preventDefault();
         const { email, password } = e.target;
