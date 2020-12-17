@@ -1,16 +1,16 @@
 .__avatar{
-    width: 5em;
-    height: 5em;
+    width: 2.5em;
+    height: 2.5em;
     border-radius: 50%;
     background: $grey;
     color: #fff;
-    border: 0.3em solid #fff;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
-    position: relative;
-    .__user{
-      height: 80%;
-      margin: 1.5em auto;
-      display: block;
+    padding: 0.1px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .__user-dummy-image{
+      width: 1em;
     }
     .__camera{
       border: 2px solid red;
@@ -20,5 +20,9 @@
       top: 0;
       z-index: 2;
       color: red;
+    }
+    .__add-shadow{
+      border: 0.3em solid #fff;
+      box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);     
     }
 }

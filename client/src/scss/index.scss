@@ -1,13 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500;600;700&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
 @import './flex.scss', './colors.scss', './spinner.scss', './styles.scss',
-'./LoginPage.scss', './UploadPicture.scss', './avatar.scss';
+'./LoginPage.scss', './UploadPicture.scss', './avatar.scss', './ChatRoom.scss', './User.scss', './UserPanel.scss';
 
 *{
   box-sizing: border-box;
 }
-h1, h2, h3, h4{
+h1, h2{
   color: $primary;
+  font-weight: 600;
+}
+h3, h4{
   font-weight: 600;
 }
 body{
@@ -21,7 +24,8 @@ body{
 a{
   color: $primary;
   text-decoration: none;
-  &:hover{
-    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.2);
-  }
+}
+.__title{
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: bolder;
 }

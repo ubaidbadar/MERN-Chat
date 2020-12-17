@@ -2,9 +2,9 @@ import { Fragment } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import authWrapper from './authWrapper';
 import AuthContext from './context/auth';
+import ChatRoom from './pages/ChatRoom';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
-import UploadPicturePage from './pages/UploadPicturePage';
 
 const App = props => {
 
@@ -18,18 +18,13 @@ const App = props => {
             <Route path='/sign-up' component={SignUpPage} />
             <Redirect from='' to='/sign-in' />
           </Fragment>
-        ) : !user.photoURL ? (
-          <Fragment>
-            <Route path='/upload-profile-picture' component={UploadPicturePage} />
-            <Redirect from='' to='/upload-profile-picture' />
-          </Fragment>
         ) : (
-              <Fragment>
-                <Route path='/chat/:userId' render={() => <div>Chat App</div>} />
-                <Route path='/chat' render={() => <div>Chat App</div>} />
-                <Redirect from='' to='/upload-profile-picture' />
-              </Fragment>
-            )}
+            <Fragment>
+              <Route path='/chat/:userId' component={ChatRoom} />
+              <Route path='/chat' component={ChatRoom} />
+              <Redirect from='' to='/chat' />
+            </Fragment>
+          )}
       </Switch>
     </AuthContext.Provider>
   )

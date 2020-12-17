@@ -2,11 +2,11 @@ import Camera from "../icons/Camera";
 
 const { default: User } = require("../icons/User");
 
-const Avatar = ({ url, onChange }) => {
+const Avatar = ({ url, onChange, className="" }) => {
     
     return (
-        <div className='__avatar'>
-            <div>{url ? <img src={url} alt='' className='__user' /> : <User className='__user' />}</div>
+        <div className={`__avatar ${className}`}>
+            <div>{url ? <img src={url} alt='' /> : <User className='__user-dummy-image' />}</div>
             {onChange && <Camera className='__camera' />}
         </div>
     )

@@ -1,0 +1,34 @@
+@import '../scss/colors.scss';
+.__User{
+    border-bottom: 1px solid rgba($color: $grey, $alpha: 0.2);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6em;
+    .__displayName, .__last-message{
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    .__displayName{
+        color: $black;
+        margin-right: 0.6em;
+    }
+    .__date{
+        color: rgba($color: $black, $alpha: 0.7);
+        font-size: 0.7em;
+    }
+    .__last-message{
+        font-size: 0.85em;
+        color: $grey;
+        grid-column: span 2;
+    }
+    .__user-image{
+        grid-row: span 2;
+        margin-right: 0.55em;
+    }
+    &:hover{
+        background: rgba($color: $primary, $alpha: 0.05);
+    }
+}
