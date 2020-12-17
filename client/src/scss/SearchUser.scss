@@ -1,0 +1,27 @@
+.__SearchUser{
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+    padding: 0.6em;
+    position: relative;
+    .__input{
+        font-size: 0.8em;
+        border-radius: 2em;
+    }
+    .__input-field{
+        position: relative;
+        svg{
+            width: 1em;
+            position: absolute;
+            right: 0.8em;
+            color: $primary;
+            top: 0.6em;
+        }
+    }
+    .__users{
+        box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+        background: #fff;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 100%;
+    }
+}
