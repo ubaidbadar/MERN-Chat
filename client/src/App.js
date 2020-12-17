@@ -21,7 +21,7 @@ const App = props => {
         ) : (
             <Fragment>
               <Route path='/chat/:userId' component={ChatRoom} />
-              <Route path='/chat' component={ChatRoom} />
+              <Route exact path='/chat' component={ChatRoom} />
               <Redirect from='' to='/chat' />
             </Fragment>
           )}

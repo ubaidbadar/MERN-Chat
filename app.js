@@ -7,10 +7,11 @@ const authRoutes = require('./routes/auth');
 const cors = require('cors');
 const { json } = require('body-parser');
 const { errorHandler } = require('./controllers/errorHandler');
+const User = require('./routes/User');
 
 app.use(cors(), json());
 
-
+app.use('/', User);
 app.use('/', authRoutes);
 
 app.use(errorHandler);

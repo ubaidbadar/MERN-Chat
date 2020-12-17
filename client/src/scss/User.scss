@@ -26,7 +26,7 @@
     .__user-image{
         margin-right: 0.55em;
     }
-    &:hover{
+    &.active,&:hover{
         background: rgba($color: $primary, $alpha: 0.05);
     }
     &:not(.__searchResult){
