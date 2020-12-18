@@ -5,22 +5,24 @@ const Chat = require('../models/Chat');
 
 router.get('/chats', authMiddleWare, (req, res, next) => {
     Chat.find({ participants: req.userId }, { 'messages': { $slice: -1 } }, { 'participants': req.userId })
-        .populate('participants', 'displayName photoURL')
+        .populate({
+            path: 'participants',
+            match: {_id: {'$nin': [req.userId]}}
+        })
         .select('participants')
         .then(chat => {
             const transformedChat = [];
-            chat.forEach(({ messages, participants, _id }) => {
-                const { message, messageType, read } = messages[0];
-                const participant = participants.find(p => p._id.toString() !== req.userId.toString())
+            chat.forEach(({participants, messages}) => {
                 transformedChat.push({
-                    _id: participant._id,
-                    message,
-                    messageType,
-                    read,
-                    displayName: participant.displayName,
-                })
+                    _id: participants[0]._id,
+                    displayName: participants[0].displayName,
+                    message: messages[0].message,
+                    date: messages[0].date,
+                    messageType: messages[0].messageType,
+                    read: messages[0].read,
+                });
             })
-            res.status(200).json(transformedChat);
+            res.json(transformedChat)
         })
         .catch(next);
 })

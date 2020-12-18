@@ -3,6 +3,7 @@ import User from '../components/User';
 import SearchUser from './SearchUser';
 
 const UserPanel = ({ users }) => {
+    console.log(users);
     return (
         <div className='__UserPanel'>
             <SearchUser />
