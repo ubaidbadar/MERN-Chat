@@ -2,7 +2,7 @@ import Chat from "../components/Chat";
 import UserPanel from "../components/UserPanel";
 import { useParams } from 'react-router-dom';
 import SelectChat from "../components/SelectChat";
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, memo } from 'react';
 import { getUserChats } from "../apis/chat";
 import AuthContext from '../context/auth';
 
@@ -13,6 +13,7 @@ const ChatRoom = props => {
     useEffect(() => {
         getUserChats(user.token);
     }, [])
+    console.log('updated')
     return (
         <div className='__flex'>
             <UserPanel />
@@ -23,4 +24,4 @@ const ChatRoom = props => {
     )
 }
 
-export default ChatRoom;
+export default memo(ChatRoom);

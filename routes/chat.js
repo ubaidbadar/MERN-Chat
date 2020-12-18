@@ -7,7 +7,17 @@ router.get('/chats', authMiddleWare, (req, res, next) => {
     Chat.find({ participants: req.userId }, { 'messages': { $slice: -1 } })
         .populate('participants', 'displayName photoURL')
         .select('participants')
-        .then(chat => res.status(200).json(chat))
+        .then(chat => {
+            const transformedChat = [];
+            chat.forEach(c => {
+                transformedChat.push({
+                    _id: c._id,
+                    participant: c.participants.find(p => p._id.toString() !== req.userId.toString()),
+                    lastMessage: c.messages[0]
+                })
+            })
+            res.status(200).json(transformedChat);
+        })
         .catch(next);
 })
 
@@ -27,7 +37,7 @@ router.post('/chat/:receiverId', authMiddleWare, (req, res, next) => {
         .then(chat => {
             if (chat) return chat;
             chat = new Chat({ participants, messages: [message] });
-            chat.save();
+            return chat.save();
         })
         .then(chat => res.status(201).json(chat))
         .catch(next)
