@@ -12,9 +12,9 @@ export const getChat = (token, userId) => {
         .catch(err => console.log(err))
 }
 
-export const sendMessage = (token, userId, message) => {
+export const sendMessage = (token, message, selectedUserId) => {
     const data = option(message, 'POST', token);
-    fetch(`${apiURL}/chat/${userId}`, data)
+    fetch(`${apiURL}/chat/${selectedUserId}`, data)
         .then(res => res.json())
         .then(res => console.log(res))
         .catch(err => console.log(err))

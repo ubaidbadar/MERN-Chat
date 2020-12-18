@@ -4,12 +4,11 @@ import { useParams } from 'react-router-dom';
 import SelectChat from "../components/SelectChat";
 
 const ChatRoom = props => {
-    const { userId } = useParams();
-    console.log(userId);
+    const { selectedUserId } = useParams();
     return (
         <div className='__flex'>
             <UserPanel />
-            {userId ? <Chat /> : (
+            {selectedUserId ? <Chat selectedUserId={selectedUserId} /> : (
                 <SelectChat />
             )}
         </div>
