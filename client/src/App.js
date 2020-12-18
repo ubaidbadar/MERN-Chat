@@ -7,7 +7,6 @@ import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 
 const App = props => {
-  // const userId = "5fd87cbde6a05a2f44a11ee3"
   const { user } = props;
   return (
     <AuthContext.Provider value={{ ...props }} >
@@ -15,11 +14,12 @@ const App = props => {
         {!user ? (
           <Fragment>
             <Route path='/sign-up' component={SignUpPage} />
-            <Route e path='/sign-in' component={LoginPage} />
+            <Route path='/' component={LoginPage} />
           </Fragment>
         ) : (
             <Fragment>
-              <Route path='/:userId' component={ChatRoom} />
+              <Route path='/chat/:userId' component={ChatRoom} />
+              <Route path='/' component={ChatRoom} />
             </Fragment>
           )}
       </Switch>

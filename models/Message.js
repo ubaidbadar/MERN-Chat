@@ -1,4 +1,3 @@
-const { timeStamp } = require('console');
 const { Schema, model } = require('mongoose');
 
 const Message = new Schema({
