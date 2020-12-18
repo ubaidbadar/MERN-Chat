@@ -8,7 +8,8 @@ router.get('/search/:search', authMiddleWare, (req, res, next) => {
         $or: [
             { displayName: regExp },
             { email: regExp }
-        ]
+        ],
+        _id: { $ne: req.userId }
     })
         .limit(3)
         .select('displayName photoURL')
