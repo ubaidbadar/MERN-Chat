@@ -4,6 +4,10 @@ const Chat = new Schema({
     participants: [{ type: Schema.Types.ObjectId, required: true, ref: 'User' }],
     messages: [
         {
+            date: {
+                type: String,
+                required: true,
+            },
             message: {
                 type: String,
                 required: true
@@ -24,6 +28,6 @@ const Chat = new Schema({
         }
     ],
 
-}, { timestamps: true })
+})
 
 module.exports = model('Chat', Chat);

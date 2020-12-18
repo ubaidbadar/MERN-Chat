@@ -4,16 +4,20 @@ const Chat = require('../models/Chat');
 
 
 router.get('/chats', authMiddleWare, (req, res, next) => {
-    Chat.find({ participants: req.userId }, { 'messages': { $slice: -1 } })
+    Chat.find({ participants: req.userId }, { 'messages': { $slice: -1 } }, { 'participants': req.userId })
         .populate('participants', 'displayName photoURL')
         .select('participants')
         .then(chat => {
             const transformedChat = [];
-            chat.forEach(c => {
+            chat.forEach(({ messages, participants, _id }) => {
+                const { message, messageType, read } = messages[0];
+                const participant = participants.find(p => p._id.toString() !== req.userId.toString())
                 transformedChat.push({
-                    _id: c._id,
-                    participant: c.participants.find(p => p._id.toString() !== req.userId.toString()),
-                    lastMessage: c.messages[0]
+                    _id: participant._id,
+                    message,
+                    messageType,
+                    read,
+                    displayName: participant.displayName,
                 })
             })
             res.status(200).json(transformedChat);
@@ -25,9 +29,10 @@ router.post('/chat/:receiverId', authMiddleWare, (req, res, next) => {
     const participants = [req.userId, req.params.receiverId]
     const message = {
         message: req.body.message,
-        messageType: 'string',
+        messageType: req.body.type || 'string',
         sender: req.userId,
         read: false,
+        date: new Date().toISOString(),
     }
     Chat.findOneAndUpdate(
         { participants },

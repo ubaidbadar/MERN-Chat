@@ -10,19 +10,17 @@ const App = props => {
   const { user } = props;
   return (
     <AuthContext.Provider value={{ ...props }} >
-      <Switch>
-        {!user ? (
-          <Fragment>
-            <Route path='/sign-up' component={SignUpPage} />
-            <Route path='' component={LoginPage} />
-          </Fragment>
-        ) : (
-            <Fragment>
-              <Route path='/chat/:selectedUserId' component={ChatRoom} />
-              <Route path='' component={ChatRoom} />
-            </Fragment>
-          )}
-      </Switch>
+      {!user ? (
+        <Switch>
+          <Route path='/sign-up' component={SignUpPage} />
+          <Route path='/' component={LoginPage} />
+        </Switch>
+      ) : (
+          <Switch>
+            <Route path='/chat/:selectedUserId' component={ChatRoom} />
+            <Route path='/' component={ChatRoom} />
+          </Switch>
+        )}
     </AuthContext.Provider>
   )
 }

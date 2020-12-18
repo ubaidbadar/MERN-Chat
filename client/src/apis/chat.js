@@ -16,9 +16,12 @@ export const sendMessage = (token, message, selectedUserId) => {
         .catch(err => console.log(err))
 }
 
-export const getUserChats = token => {
+export const getUserChats = (token, onSuccess, onError) => {
     fetch(`${apiURL}/chats`, { headers: { Authorization: 'Berear ' + token } })
-        .then(res => res.json())
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+        .then(async res => {
+            const data = await res.json();
+            if(res.status === 200) return onSuccess(data);
+            onError(data)
+        })
+        .catch(onError)
 }
