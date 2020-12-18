@@ -18,8 +18,8 @@ const App = props => {
           </Fragment>
         ) : (
             <Fragment>
-              <Route path='/chat/:userId' component={ChatRoom} />
-              <Route exact path='/' component={ChatRoom} />
+              <Route path='/chat/:selectedUserId' component={ChatRoom} />
+              <Route path='' component={ChatRoom} />
             </Fragment>
           )}
       </Switch>
