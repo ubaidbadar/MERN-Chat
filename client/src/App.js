@@ -14,12 +14,12 @@ const App = props => {
         {!user ? (
           <Fragment>
             <Route path='/sign-up' component={SignUpPage} />
-            <Route path='/' component={LoginPage} />
+            <Route exact path='/' component={LoginPage} />
           </Fragment>
         ) : (
             <Fragment>
               <Route path='/chat/:userId' component={ChatRoom} />
-              <Route path='/' component={ChatRoom} />
+              <Route exact path='/' component={ChatRoom} />
             </Fragment>
           )}
       </Switch>

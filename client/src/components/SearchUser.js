@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Search from '../icons/Search';
 import User from './User';
 import { search } from '../apis/search';
 import { useHistory } from 'react-router-dom';
+import AuthContext from '../context/auth';
 
 const SearchUser = props => {
+    const { token } = useContext(AuthContext).user;
     const history = useHistory();
     const [users, setUsers] = useState([]);
     const [activeUserIndex, setActiveUserIndex] = useState(-1);
@@ -23,7 +25,7 @@ const SearchUser = props => {
     const onChange = e => {
         initialStateHandler();
         const value = e.target.value.trim();
-        value.length > 0 && search(value, setUsers, setEror);
+        value.length > 0 && search(token, value, setUsers, setEror);
     };
 
     const onKeyDown = e => {
@@ -32,7 +34,7 @@ const SearchUser = props => {
             const keyCode = e.keyCode;
             if (keyCode === 13 && activeUserIndex > -1 && activeUserIndex < users.length) {
                 e.target.value = '';
-                return history.replace(`/${users[activeUserIndex]._id}`);
+                return history.replace(`/chat/${users[activeUserIndex]._id}`);
             }
             let nextActiveUserIndex = activeUserIndex;
             if (keyCode === 40) {
