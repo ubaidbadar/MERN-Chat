@@ -26,4 +26,4 @@ const Chat = new Schema({
 
 }, { timestamps: true })
 
-module.exports = model('messages', Chat);
+module.exports = model('Message', Chat);

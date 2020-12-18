@@ -2,6 +2,15 @@ const router = require('express').Router();
 const authMiddleWare = require('../middlewares/auth');
 const Chat = require('../models/Chat');
 
+
+router.get('/chats', authMiddleWare, (req, res, next) => {
+    Chat.find({ participants: req.userId }, { 'messages': { $slice: -1 } })
+        .populate('participants', 'displayName photoURL')
+        .select('participants')
+        .then(chat => res.status(200).json(chat))
+        .catch(next);
+})
+
 router.post('/chat/:receiverId', authMiddleWare, (req, res, next) => {
     const participants = [req.userId, req.params.receiverId]
     const message = {
@@ -11,7 +20,7 @@ router.post('/chat/:receiverId', authMiddleWare, (req, res, next) => {
         read: false,
     }
     Chat.findOneAndUpdate(
-        { participants: { "$in": participants } },
+        { participants },
         { "$push": { "messages": message } },
         { useFindAndModify: false },
     )

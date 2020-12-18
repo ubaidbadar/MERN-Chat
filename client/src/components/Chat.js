@@ -1,9 +1,7 @@
-import { useContext } from 'react';
 import { sendMessage } from '../apis/chat';
-import AuthContext from '../context/auth';
 
-const Chat = ({selectedUserId}) => {
-    const token = useContext(AuthContext).user.token;
+const Chat = ({ selectedUserId, token }) => {
+
     const onMessageSend = e => {
         e.preventDefault();
         const message = e.target.message.value.trim();

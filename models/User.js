@@ -26,4 +26,4 @@ User.pre('save', function(next){
     .catch(next)
 })
 
-module.exports = model('users', User);
+module.exports = model('User', User);
