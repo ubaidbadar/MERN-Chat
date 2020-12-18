@@ -1,22 +1,26 @@
 const router = require('express').Router();
 const authMiddleWare = require('../middlewares/auth');
-const Message = require('../models/Message');
+const Chat = require('../models/Chat');
 
-router.get('/chat/:userId', authMiddleWare, (req, res, next) => {
-    const userId = req.userId;
-    const chatUserId = req.params.userIdl
-    Message.find(({ participants: { "$in": [userId, chatUserId] } }))
-        .then(chat => res.json(chat))
-        .catch(next)
-})
-
-router.post('/chat/:userId', authMiddleWare, (req, res, next) => {
-    const { message } = req.body;
-    const userId = req.userId;
-    const chatUserId = req.params.userId;
-    const chatMessage = new Message({ message, participants: [userId, chatUserId], read: false });
-    chatMessage.save()
-        .then(message => res.json(message))
+router.post('/chat/:receiverId', authMiddleWare, (req, res, next) => {
+    const participants = [req.userId, req.params.receiverId]
+    const message = {
+        message: req.body.message,
+        messageType: 'string',
+        sender: req.userId,
+        read: false,
+    }
+    Chat.findOneAndUpdate(
+        { participants: { "$in": participants } },
+        { "$push": { "messages": message } },
+        { useFindAndModify: false },
+    )
+        .then(chat => {
+            if (chat) return chat;
+            chat = new Chat({ participants, messages: [message] });
+            chat.save();
+        })
+        .then(chat => res.status(201).json(chat))
         .catch(next)
 })
 

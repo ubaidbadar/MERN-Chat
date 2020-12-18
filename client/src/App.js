@@ -14,7 +14,7 @@ const App = props => {
         {!user ? (
           <Fragment>
             <Route path='/sign-up' component={SignUpPage} />
-            <Route exact path='/' component={LoginPage} />
+            <Route path='' component={LoginPage} />
           </Fragment>
         ) : (
             <Fragment>

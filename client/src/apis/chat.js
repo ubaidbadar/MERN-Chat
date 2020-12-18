@@ -13,7 +13,7 @@ export const getChat = (token, userId) => {
 }
 
 export const sendMessage = (token, message, selectedUserId) => {
-    const data = option(message, 'POST', token);
+    const data = option({message}, 'POST', token);
     fetch(`${apiURL}/chat/${selectedUserId}`, data)
         .then(res => res.json())
         .then(res => console.log(res))

@@ -3,7 +3,7 @@ import { sendMessage } from '../apis/chat';
 import AuthContext from '../context/auth';
 
 const Chat = ({selectedUserId}) => {
-    const token = useContext(AuthContext).token;
+    const token = useContext(AuthContext).user.token;
     const onMessageSend = e => {
         e.preventDefault();
         const message = e.target.message.value.trim();
