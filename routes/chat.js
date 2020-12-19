@@ -72,7 +72,7 @@ router.post('/chat/:receiverId', authMiddleWare, (req, res, next) => {
             return chat.save();
         })
         .then(chat => {
-            io.getIO().emit('broadcast', { receiverId, ...chat })
+            io.getIO().emit('chat', { receiverId, ...chat })
             res.status(201).json(chat);
         })
         .catch(next)

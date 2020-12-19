@@ -1,8 +1,6 @@
 import apiURL from './apiURL';
 
 export const getUser = (userId, token, onSuccess, onError) => {
-    console.log(token);
-    console.log(userId);
     fetch(`${apiURL}/user/${userId}`, {
         headers: {
             Authorization: 'Bearer ' + token
