@@ -6,7 +6,7 @@ const User = require('../models/User');
 const generateError = require('../utility/generateError');
 
 router.get('/chats', authMiddleWare, (req, res, next) => {
-    Chat.find({ participants: req.userId }, { 'messages': { $slice: -1 } }, { 'participants': req.userId })
+    Chat.find({ participants: req.userId }, { 'messages': { $slice: -1 } })
         .populate({
             path: 'participants',
             select: 'displayName photoURL',
@@ -35,6 +35,7 @@ router.get('/chat/:selectedUserId', authMiddleWare, (req, res, next) => {
     const { selectedUserId } = req.params;
 
     Chat.findOne({ participants: { $all: [userId, selectedUserId] } })
+        .slice('messages', 0, 20)
         .populate({
             path: 'participants',
             match: { _id: { '$nin': [userId] } },
