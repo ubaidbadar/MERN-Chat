@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { getChat, sendMessage } from '../apis/chat';
 import Message from './Message';
 import Avatar from '../ui/Avatar';
+import openSocket from 'socket.io-client';
 
 const Chat = ({ selectedUserId, token, userId }) => {
     const [chat, setChat] = useState('initial');
@@ -14,6 +15,14 @@ const Chat = ({ selectedUserId, token, userId }) => {
     useEffect(() => {
         getChat(token, selectedUserId, setChat, setError)
     }, [selectedUserId])
+
+    useEffect(() => {
+        const socket = openSocket('http://localhost:5000/');
+        socket.on('chat', chat => {
+            console.log(chat)
+        })
+    }, []);
+
     return err ? <div className='__error __m-a'> {err.message} </div> : (
         chat === 'initial' ? <div className='__spinner __m-a'></div> : (
             <div className='__chat __f1 __column'>

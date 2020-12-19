@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const authMiddleWare = require('../middlewares/auth');
 const Chat = require('../models/Chat');
-
+const io = require('../socketIO');
 
 router.get('/chats', authMiddleWare, (req, res, next) => {
     Chat.find({ participants: req.userId }, { 'messages': { $slice: -1 } }, { 'participants': req.userId })
@@ -56,7 +56,6 @@ router.post('/chat/:receiverId', authMiddleWare, (req, res, next) => {
         read: false,
         date: new Date().toISOString(),
     }
-
     Chat.findOneAndUpdate(
         { participants: { $all: participants } },
         { "$push": { "messages": message } },
@@ -67,7 +66,10 @@ router.post('/chat/:receiverId', authMiddleWare, (req, res, next) => {
             chat = new Chat({ participants, messages: [message] });
             return chat.save();
         })
-        .then(chat => res.status(201).json(chat))
+        .then(chat => {
+            io.getIO().broadcast('chat', { receiverId: req.params.receiverId, ...chat });
+            res.status(201).json(chat);
+        })
         .catch(next)
 })
 

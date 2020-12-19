@@ -1,12 +1,20 @@
 let io;
 
 module.exports = {
-    init: httpServer => require('socket.io')(httpServer),
+    init: httpServer => {
+        io = require('socket.io')(httpServer, {
+            cors: {
+                origin: "http://localhost:3000",
+                credentials: true
+            }
+        });
+        return io;
+    },
     getIO: () => {
-        if(!io){
-            const error = new Error();
+        if (!io) {
+            const error = new Error('Socket connection failed');
             error.statusCode = 502;
-            error.message = 'Socket connection failed'
+            throw error;
         }
         return io;
     }
