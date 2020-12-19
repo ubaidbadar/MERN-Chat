@@ -48,14 +48,19 @@ router.get('/chat/:selectedUserId', authMiddleWare, (req, res, next) => {
 })
 
 router.post('/chat/:receiverId', authMiddleWare, (req, res, next) => {
-    const participants = [req.userId, req.params.receiverId]
+    const { receiverId } = req.params;
+    const { userId } = req;
+
+    const participants = [userId, receiverId];
+
     const message = {
         message: req.body.message,
         messageType: req.body.type || 'string',
-        sender: req.userId,
+        sender: userId,
         read: false,
         date: new Date().toISOString(),
     }
+
     Chat.findOneAndUpdate(
         { participants: { $all: participants } },
         { "$push": { "messages": message } },
@@ -67,7 +72,7 @@ router.post('/chat/:receiverId', authMiddleWare, (req, res, next) => {
             return chat.save();
         })
         .then(chat => {
-            io.getIO().broadcast('chat', { receiverId: req.params.receiverId, ...chat });
+            io.getIO().emit('broadcast', { receiverId, ...chat })
             res.status(201).json(chat);
         })
         .catch(next)
