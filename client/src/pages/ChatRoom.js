@@ -17,10 +17,10 @@ const ChatRoom = props => {
     return (
         <div className='__flex __ChatRoom'>
             {err ? <h1 className='__error'>{err.message}</h1> : (
-                chatUsers === 'initial' ? <div className='__spinner __chatRoomSpinner'></div> : (
+                chatUsers === 'initial' ? <div className='__spinner __m-a'></div> : (
                     <Fragment>
                         <UserPanel users={chatUsers} />
-                        {selectedUserId ? <Chat selectedUserId={selectedUserId} token={user.token} /> : <SelectChat />}
+                        {selectedUserId ? <Chat selectedUserId={selectedUserId} token={user.token} userId={user.userId} /> : <SelectChat />}
                     </Fragment>
                 )
             )}

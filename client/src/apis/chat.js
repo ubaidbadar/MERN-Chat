@@ -1,10 +1,13 @@
 import option from '../utility/option';
 import apiURL from './apiURL';
 
-export const getChat = (token, selectedUserId) => {
+export const getChat = (token, selectedUserId, onSuccess, onError) => {
     fetch(`${apiURL}/chat/${selectedUserId}`, { headers: { Authorization: 'Bearer ' + token } })
-        .then(res => res.json())
-        .then(res => console.log(res))
+        .then(async res => {
+            const data = await res.json();
+            if(res.status === 200) return onSuccess(data);
+            onError(data)
+        })
         .catch(err => console.log(err))
 }
 

@@ -1,0 +1,23 @@
+.__Message{
+    margin: 0.7em 0;
+    width: 20em;
+    max-width: 50%;
+    &.__right{
+        text-align: right;
+        margin-left: auto;
+        .__message{
+            background: linear-gradient(#66bb6a, #4caf50, #66bb6a);
+        }
+    }
+    .__message{
+        border-radius: 1em;
+        padding: 0.4em 0.7em;
+        background: linear-gradient(#64b5f6, #42a5f5, #64b5f6);
+        display: inline-block;
+        font-size: 0.9em;
+        color: #fff;
+    }
+    &:last-child{
+        margin-bottom: 0;
+    }
+}

@@ -7,12 +7,13 @@ router.get('/chats', authMiddleWare, (req, res, next) => {
     Chat.find({ participants: req.userId }, { 'messages': { $slice: -1 } }, { 'participants': req.userId })
         .populate({
             path: 'participants',
-            match: {_id: {'$nin': [req.userId]}}
+            select: 'displayName photoURL',
+            match: { _id: { '$nin': [req.userId] } },
         })
         .select('participants')
         .then(chat => {
             const transformedChat = [];
-            chat.forEach(({participants, messages}) => {
+            chat.forEach(({ participants, messages }) => {
                 transformedChat.push({
                     _id: participants[0]._id,
                     displayName: participants[0].displayName,
@@ -27,6 +28,25 @@ router.get('/chats', authMiddleWare, (req, res, next) => {
         .catch(next);
 })
 
+router.get('/chat/:selectedUserId', authMiddleWare, (req, res, next) => {
+    const participants = [req.userId, req.params.selectedUserId];
+    Chat.findOne({ participants: { $all: participants } })
+        .populate({
+            path: 'participants',
+            match: { _id: { '$nin': [req.userId] } },
+            select: 'displayName photoURL',
+            ref: 'User'
+        })
+        .then(conversation => {
+            if (conversation) res.status(200).json({
+                user: conversation.participants[0],
+                messages: conversation.messages,
+            })
+            res.status(200).json({ user: {}, messages: [] })
+        })
+        .catch(next)
+})
+
 router.post('/chat/:receiverId', authMiddleWare, (req, res, next) => {
     const participants = [req.userId, req.params.receiverId]
     const message = {
@@ -36,8 +56,9 @@ router.post('/chat/:receiverId', authMiddleWare, (req, res, next) => {
         read: false,
         date: new Date().toISOString(),
     }
+
     Chat.findOneAndUpdate(
-        { participants },
+        { participants: { $all: participants } },
         { "$push": { "messages": message } },
         { useFindAndModify: false },
     )
