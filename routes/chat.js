@@ -2,6 +2,8 @@ const router = require('express').Router();
 const authMiddleWare = require('../middlewares/auth');
 const Chat = require('../models/Chat');
 const io = require('../socketIO');
+const User = require('../models/User');
+const generateError = require('../utility/generateError');
 
 router.get('/chats', authMiddleWare, (req, res, next) => {
     Chat.find({ participants: req.userId }, { 'messages': { $slice: -1 } }, { 'participants': req.userId })
@@ -29,11 +31,13 @@ router.get('/chats', authMiddleWare, (req, res, next) => {
 })
 
 router.get('/chat/:selectedUserId', authMiddleWare, (req, res, next) => {
-    const participants = [req.userId, req.params.selectedUserId];
-    Chat.findOne({ participants: { $all: participants } })
+    const { userId } = req;
+    const { selectedUserId } = req.params;
+
+    Chat.findOne({ participants: { $all: [userId, selectedUserId] } })
         .populate({
             path: 'participants',
-            match: { _id: { '$nin': [req.userId] } },
+            match: { _id: { '$nin': [userId] } },
             select: 'displayName photoURL',
             ref: 'User'
         })
@@ -42,7 +46,11 @@ router.get('/chat/:selectedUserId', authMiddleWare, (req, res, next) => {
                 user: conversation.participants[0],
                 messages: conversation.messages,
             })
-            res.status(200).json({ user: {}, messages: [] })
+            return User.findById(selectedUserId).select('displayName photoURL')
+        })
+        .then(user => {
+            if (user) return res.status(200).json({ user, messages: [] })
+            generateError(404, 'User not found!');
         })
         .catch(next)
 })
