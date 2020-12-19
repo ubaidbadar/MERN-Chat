@@ -25,7 +25,7 @@ router.get('/chats', authMiddleWare, (req, res, next) => {
                     read: messages[0].read,
                 });
             })
-            res.json(transformedChat)
+            res.status(200).json(transformedChat)
         })
         .catch(next);
 })
@@ -49,7 +49,7 @@ router.get('/chat/:selectedUserId', authMiddleWare, (req, res, next) => {
             return User.findById(selectedUserId).select('displayName photoURL')
         })
         .then(user => {
-            if (user) return res.status(200).json({ user, messages: [] })
+            if (user) res.status(200).json({ user, messages: [] })
             generateError(404, 'User not found!');
         })
         .catch(next)
@@ -79,9 +79,10 @@ router.post('/chat/:receiverId', authMiddleWare, (req, res, next) => {
             chat = new Chat({ participants, messages: [message] });
             return chat.save();
         })
-        .then(chat => {
-            io.getIO().emit('chat', { receiverId, ...chat })
-            res.status(201).json(chat);
+        .then(_ => {
+            message._id = new Date().getTime();
+            io.getIO().emit('chat', { receiverId, ...message })
+            res.status(201).json(message);
         })
         .catch(next)
 })

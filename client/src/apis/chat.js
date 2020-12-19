@@ -11,12 +11,13 @@ export const getChat = (token, selectedUserId, onSuccess, onError) => {
         .catch(err => console.log(err))
 }
 
-export const sendMessage = (token, message, selectedUserId) => {
+export const sendMessage = (token, message, selectedUserId, onSuccess, onError) => {
     const data = option({ message }, 'POST', token);
+
     fetch(`${apiURL}/chat/${selectedUserId}`, data)
         .then(res => res.json())
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+        .then(onSuccess)
+        .catch(onError)
 }
 
 export const getUserChats = (token, onSuccess, onError) => {
