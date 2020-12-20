@@ -6,13 +6,12 @@ const User = require('../models/User');
 const generateError = require('../utility/generateError');
 
 router.get('/chats', authMiddleWare, (req, res, next) => {
-    Chat.find({ participants: req.userId }, { 'messages': { $slice: -1 } })
+    Chat.find({ participants: req.userId })
         .populate({
             path: 'participants',
             select: 'displayName photoURL',
             match: { _id: { '$nin': [req.userId] } },
         })
-        .select('participants')
         .then(chat => {
             const transformedChat = [];
             chat.forEach(({ participants, messages }) => {
@@ -22,8 +21,8 @@ router.get('/chats', authMiddleWare, (req, res, next) => {
                     message: messages[0].message,
                     date: messages[0].date,
                     messageType: messages[0].messageType,
-                    read: messages[0].read,
-                });
+                    unReadLength: messages.filter(message => !message.read).length,
+                })
             })
             res.status(200).json(transformedChat)
         })
