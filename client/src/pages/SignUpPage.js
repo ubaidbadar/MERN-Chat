@@ -2,7 +2,6 @@ import { useState, Fragment } from "react";
 import { Link } from "react-router-dom";
 import Input from "../ui/Input";
 import checkValidity from "../utility/checkValidity";
-import { signup } from "../apis/auth";
 import { useDispatch } from 'react-redux';
 import { signUpAction } from "../store/actions/auth";
 
