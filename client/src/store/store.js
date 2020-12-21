@@ -1,7 +1,8 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import user from './reducers/auth';
 import thunk from 'redux-thunk';
+import user from './reducers/auth';
+import chatUsers from './reducers/chatUsers';
 
-const allReducers = combineReducers({ user });
+const allReducers = combineReducers({ user, chatUsers });
 
 export default createStore(allReducers, applyMiddleware(thunk))

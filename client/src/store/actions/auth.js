@@ -4,20 +4,15 @@ import axios from "axios";
 
 
 const storeUserToRedux = payload => ({ type: USER_STATE, payload });
-
 const asycLogoutHandler = (user, dispatch) => {
     const time = user.expiresIn - new Date().getTime();
-    return setTimeout(() => {
-        logout(dispatch)
-    }, time);
+    return setTimeout(() => logout(dispatch), time);
 }
-
 const logout = dispatch => {
     localStorage.clear('user');
     clearInterval(asycLogoutHandler);
     dispatch(storeUserToRedux(null));
 }
-
 const signInHandler = (user, dispatch) => {
     localStorage.setItem('user', JSON.stringify(user));
     asycLogoutHandler(user, dispatch);
