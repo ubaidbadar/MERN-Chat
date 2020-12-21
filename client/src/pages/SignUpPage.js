@@ -1,13 +1,13 @@
-import { useState, Fragment, useContext } from "react";
+import { useState, Fragment } from "react";
 import { Link } from "react-router-dom";
 import Input from "../ui/Input";
 import checkValidity from "../utility/checkValidity";
-import AuthContext from '../context/auth';
 import { signup } from "../apis/auth";
+import { useDispatch } from 'react-redux';
+import { signUpAction } from "../store/actions/auth";
 
 const SignUpPage = props => {
-    const { onLogin } = useContext(AuthContext);
-
+    const dispatch = useDispatch();
     const [status, setStatus] = useState("");
 
     const onError = error => setStatus(error.message);
@@ -20,7 +20,7 @@ const SignUpPage = props => {
         isValid = checkValidity(displayName) && isValid;
         if (!isValid) return;
         setStatus("loading");
-        signup(email.value, password.value, displayName.value, onLogin, onError);
+        dispatch(signUpAction(email.value, password.value, displayName.value, onError));
     }
     return (
         <div className='__LoginPage'>

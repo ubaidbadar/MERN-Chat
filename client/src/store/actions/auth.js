@@ -31,4 +31,10 @@ export const signInAction = (email, password, onError) => dispatch => {
         .catch(err => onError(err.response.data));
 }
 
+export const signUpAction = (email, password, displayName, onError) => dispatch => {
+    axios.post(`${backendURL}/sign-up`, { email, password, displayName })
+        .then(({ data }) => signInHandler(data, dispatch))
+        .catch(err => onError(err.response.data));
+}
+
 export const logoutAction = () => dispatch => logout(dispatch);
