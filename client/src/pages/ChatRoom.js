@@ -2,18 +2,18 @@ import Chat from "../components/Chat";
 import UserPanel from "../components/UserPanel";
 import { useParams } from 'react-router-dom';
 import SelectChat from "../components/SelectChat";
-import { useEffect, useState, useContext, memo, Fragment } from 'react';
-import { getUserChats } from "../apis/chat";
-import AuthContext from '../context/auth';
+import { useEffect, useState, Fragment } from 'react';
+// import { getUserChats } from "../apis/chat";
+import { useSelector } from 'react-redux';
 
 const ChatRoom = props => {
     const { selectedUserId } = useParams();
-    const { user } = useContext(AuthContext);
+    const user = useSelector(({ user }) => user);
     const [chatUsers, setChatUsers] = useState('initial');
     const [err, setError] = useState(null);
     useEffect(() => {
-        getUserChats(user.token, setChatUsers, setError);
-    }, [])
+        // getUserChats(user.token, setChatUsers, setError);
+    }, []);
     return (
         <div className='__flex __ChatRoom'>
             {err ? <h1 className='__error'>{err.message}</h1> : (
@@ -28,4 +28,4 @@ const ChatRoom = props => {
     )
 }
 
-export default memo(ChatRoom);
+export default ChatRoom;

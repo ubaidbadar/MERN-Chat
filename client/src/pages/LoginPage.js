@@ -1,14 +1,13 @@
-import { useState, useContext, Fragment } from "react";
+import { useState, Fragment } from "react";
 import { Link } from "react-router-dom";
-import { signin } from "../apis/auth";
 import Input from "../ui/Input";
 import checkValidity from "../utility/checkValidity";
-import AuthContext from '../context/auth';
+import { useDispatch } from 'react-redux';
+import { signInAction } from "../store/actions/auth";
 
 const LoginPage = props => {
-    const { onLogin } = useContext(AuthContext);
     const [status, setStatus] = useState("");
-
+    const dispatch = useDispatch();
     const onError = error => setStatus(error.message)
 
     const onSubmit = e => {
@@ -17,8 +16,9 @@ const LoginPage = props => {
         let isValid = checkValidity(email);
         isValid = checkValidity(password) && isValid;
         if (!isValid) return;
+
         setStatus("loading");
-        signin(email.value, password.value, onLogin, onError)
+        dispatch(signInAction(email.value, password.value, onError));
     }
     return (
         <div className='__LoginPage'>

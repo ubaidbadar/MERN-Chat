@@ -1,12 +1,12 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import Search from '../icons/Search';
 import User from './User';
 import { search } from '../apis/search';
 import { useHistory } from 'react-router-dom';
-import AuthContext from '../context/auth';
+import { useSelector } from 'react-redux';
 
 const SearchUser = props => {
-    const { token } = useContext(AuthContext).user;
+    const { token } = useSelector(({ user }) => user);
     const history = useHistory();
     const [users, setUsers] = useState([]);
     const [activeUserIndex, setActiveUserIndex] = useState(-1);
