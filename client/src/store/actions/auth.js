@@ -2,7 +2,6 @@ import { USER_STATE } from "../actionTypes";
 import backendURL from '../backendURL';
 import axios from "axios";
 
-
 const storeUserToRedux = payload => ({ type: USER_STATE, payload });
 const asycLogoutHandler = (user, dispatch) => {
     const time = user.expiresIn - new Date().getTime();

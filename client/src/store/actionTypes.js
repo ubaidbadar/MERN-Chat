@@ -1,2 +1,4 @@
 export const USER_STATE = 'USER_STATE';
 export const CHAT_USERS = 'CHAT_USERS';
+export const SAVE_CONVERSATION = 'SAVE_CONVERSATION';
+export const SAVE_MESSAGE = 'SAVE_MESSAGE';

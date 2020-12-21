@@ -1,26 +1,19 @@
-import { useState, useEffect, useReducer } from 'react';
-import { getChat, sendMessage } from '../apis/chat';
+import { useState, useEffect } from 'react';
 import Message from './Message';
 import ChatHeader from './ChatHeader';
 import SendMessage from './SendMessage';
-import actionTypes from './ChatActionTypes';
-import chatReducer from './ChatReducer';
-import io from '../SocketIO';
+import { getSpecicUserChatAction, sendMessageAction } from '../store/actions/chat';
 
-const Chat = ({ selectedUserId, token, userId }) => {
-    const [chat, dispatch] = useReducer(chatReducer);
+const Chat = ({ selectedUserId, token, userId, dispatch, chat }) => {
     const [err, setError] = useState(null);
-    const onSuccess = message => dispatch({ type: actionTypes.SAVE_MESSAGE, payload: message });
 
     useEffect(() => {
-        getChat(
-            token,
-            selectedUserId,
-            conversation => dispatch({ payload: conversation, type: actionTypes.SAVE_CONVERSATION }),
-            setError,
-        );
-        io.on('chat', onSuccess);
+        dispatch(getSpecicUserChatAction(token, selectedUserId, setError));
     }, [selectedUserId, token]);
+
+    const onMessageSend = message => {
+        dispatch(sendMessageAction(token, message, selectedUserId, setError))
+    }
 
     return err ? <div className='__error __m-a'> {err.message} </div> : (
         chat ? (
@@ -30,7 +23,7 @@ const Chat = ({ selectedUserId, token, userId }) => {
                     <div className='__conversation'>
                         {chat.messages.map(message => message && <Message {...message} key={message._id} isSenderIsUser={message.sender === userId} />)}
                     </div>
-                    <SendMessage onMessageSend={message => sendMessage(token, message, selectedUserId, onSuccess)} />
+                    <SendMessage onMessageSend={onMessageSend} />
                 </div>
             )
         ) : null

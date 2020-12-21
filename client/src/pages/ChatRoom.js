@@ -8,7 +8,7 @@ import { chatUsersAction } from "../store/actions/chatUsersAction";
 
 const ChatRoom = () => {
     const { selectedUserId } = useParams();
-    const { user, chatUsers } = useSelector(store => store);
+    const { user, chatUsers, chat } = useSelector(store => store);
     const dispatch = useDispatch();
     const [err, setError] = useState(null);
     useEffect(() => {
@@ -20,7 +20,7 @@ const ChatRoom = () => {
                 chatUsers === 'initial' ? <div className='__spinner __m-a'></div> : (
                     <Fragment>
                         <UserPanel users={chatUsers} />
-                        {selectedUserId ? <Chat selectedUserId={selectedUserId} token={user.token} userId={user.userId} /> : <SelectChat selectedUserId={selectedUserId} />}
+                        {selectedUserId ? <Chat selectedUserId={selectedUserId} token={user.token} userId={user.userId} chat={chat} dispatch={dispatch} /> : <SelectChat selectedUserId={selectedUserId} />}
                     </Fragment>
                 )
             )}
