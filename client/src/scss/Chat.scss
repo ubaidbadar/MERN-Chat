@@ -1,3 +1,5 @@
+@import './colors.scss';
+
 .__chat{
     height: 100vh;
     .__send-message-wrapper{
@@ -18,5 +20,14 @@
         .__selectedUserAvatar{
             margin-right: 0.7em;
         }
+    }
+    .__unRead-label{
+        background: rgba($color: $grey, $alpha: 0.6);
+        padding: 0.5em;
+        border-radius: 2em;
+        margin: auto;
+        width: 15em;
+        text-align: center;
+        font-weight: bold;
     }
 }

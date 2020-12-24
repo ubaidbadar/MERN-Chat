@@ -1,6 +1,6 @@
 import openSocket from 'socket.io-client';
-import apiURL from '../apis/apiURL';
+import backendURL from './backendURL';
 
-const socket = openSocket(apiURL);
+const socket = openSocket(backendURL);
 
 export default socket;
