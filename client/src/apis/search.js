@@ -6,6 +6,9 @@ export const search = (token, searchString, onSearched, onError) => {
             Authorization: 'Berears ' + token
         }
     })
-        .then(({ data }) => onSearched(data))
+        .then(({ data }) => {
+            console.log(data);
+            onSearched(data)
+        })
         .catch(err => onError(err.response.data));
 }

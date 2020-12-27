@@ -82,8 +82,8 @@ exports.sendMessage = (req, res, next) => {
         })
         .then(_ => {
             message._id = new Date().getTime();
-            const { socketId } = io.connectedUsers.find(user => user.userId === receiverId);
-            io.getIO().to(socketId).emit('chat', { receiverId, ...message });
+            const receiver = io.connectedUsers.find(user => user.userId === receiverId);
+            if (receiver) io.getIO().to(receiver.socketId).emit('chat', { receiverId, ...message });
             res.status(201).json(message);
         })
         .catch(next)
