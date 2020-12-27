@@ -5,6 +5,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 0.6em;
+    position: relative;
     .__displayName, .__last-message{
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -28,6 +29,20 @@
     }
     &.active,&:hover{
         background: rgba($color: $primary, $alpha: 0.05);
+    }
+    .__unreade-messages-length{
+        position: absolute;
+        right: 0.6em;
+        bottom: 0.8em;
+        background: $primary;
+        color: #fff;
+        width: 1.6em;
+        height: 1.6em;
+        text-align: center;
+        line-height: 1.7em;
+        border-radius: 1em;
+        font-size: 0.8em;
+        font-weight: bold;
     }
     &:not(.__searchResult){
         .__user-image{

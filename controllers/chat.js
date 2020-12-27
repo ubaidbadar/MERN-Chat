@@ -4,17 +4,19 @@ const User = require('../models/User');
 const generateError = require('../utility/generateError');
 
 exports.getChatUsers = (req, res, next) => {
-    Chat.find({ participants: req.userId }, { messages: { $elemMatch: { read: false }, sort: { createdAt: -1 } } })
+    const { userId } = req;
+    Chat.find({ participants: userId }, { messages: { $elemMatch: { read: false } } })
         .populate({
             path: 'participants',
             select: 'displayName photoURL',
-            match: { _id: { '$nin': [req.userId] } },
+            match: { _id: { '$nin': [userId] } },
         })
         .select('messages')
         .sort({ updatedAt: -1 })
         .then(chat => {
             const transformedChat = chat.map(({ participants, messages }) => {
-                const unReadeMessagesLength = messages.length;
+                let unReadeMessagesLength = 0;
+                messages.forEach(({ sender }) => sender !== userId && (unReadeMessagesLength += 1));
                 return {
                     _id: participants[0]._id,
                     displayName: participants[0].displayName,
@@ -24,7 +26,6 @@ exports.getChatUsers = (req, res, next) => {
                     unReadeMessagesLength,
                 }
             })
-                .sort((b, a) => new Date(a.date).getTime() < new Date(b.date).getTime());
             res.status(200).json(transformedChat)
         })
         .catch(next);
