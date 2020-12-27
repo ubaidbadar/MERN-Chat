@@ -1,32 +1,29 @@
 import { useState, useEffect } from 'react';
 import Search from '../icons/Search';
 import User from './User';
-import { search } from '../apis/search';
+import { searchAction } from '../store/actions/search';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-const SearchUser = props => {
-    const { token } = useSelector(({ user }) => user);
+const SearchUser = ({ token }) => {
+    const users = useSelector(({ search }) => search);
+    const dispatch = useDispatch();
     const history = useHistory();
-    const [users, setUsers] = useState([]);
+
+    const [showUsers, setShowUsers] = useState(false);
     const [activeUserIndex, setActiveUserIndex] = useState(-1);
-    const [error, setEror] = useState(null);
 
     const initialStateHandler = () => {
-        setUsers([]);
-        setEror(null);
+        setShowUsers(false);
         setActiveUserIndex(-1);
+        dispatch(searchAction());
     }
 
     useEffect(() => {
         initialStateHandler();
     }, [history.location.pathname]);
 
-    const onChange = e => {
-        initialStateHandler();
-        const value = e.target.value.trim();
-        value.length > 0 && search(token, value, setUsers, setEror);
-    };
+    const onChange = e => dispatch(searchAction(e.target.value, token));
 
     const onKeyDown = e => {
         const usrs = [...users]
@@ -53,13 +50,14 @@ const SearchUser = props => {
     return (
         <div className='__SearchUser'>
             <label className='__input-field'>
-                <input type='text' placeholder='Search User' className='__input __full' onChange={onChange} onKeyDown={onKeyDown} />
+                <input type='text' placeholder='Search User' className='__input __full' onChange={onChange} onKeyDown={onKeyDown} onBlur={() => setShowUsers(false)} onFocus={() => setShowUsers(true)} />
                 <Search />
             </label>
-            <div className='__users'>
-                {users.length > 0 && users.map((user, index) => <User {...user} key={user._id} searchResult={true} className={activeUserIndex === index ? 'active' : ''} />)}
-                {error && <div className='__error'>{error.message}</div>}
-            </div>
+            {showUsers && (
+                <div className='__users'>
+                    {users.length > 0 && users.map((user, index) => <User {...user} key={user._id} searchResult={true} className={activeUserIndex === index ? 'active' : ''} />)}
+                </div>
+            )}
         </div>
     )
 }

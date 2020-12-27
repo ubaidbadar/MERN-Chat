@@ -5,10 +5,10 @@ const authMiddleWare = require('../middlewares/auth');
 router.get('/search/:search', authMiddleWare, (req, res, next) => {
     const regExp = new RegExp(req.params.search, 'i');
     User.find({
-        $or: [
-            { displayName: regExp },
-            { email: regExp }
-        ],
+        $and: [
+            { $or: [{ displayName: regExp }, { email: regExp }] },
+            { _id: { $ne: req.userId } }
+        ]
     })
         .limit(3)
         .select('displayName photoURL')

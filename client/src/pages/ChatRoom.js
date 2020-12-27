@@ -19,7 +19,7 @@ const ChatRoom = () => {
             {err ? <h1 className='__error'>{err.message}</h1> : (
                 chatUsers === 'initial' ? <div className='__spinner __m-a'></div> : (
                     <Fragment>
-                        <UserPanel users={chatUsers} />
+                        <UserPanel users={chatUsers} token={user.token} />
                         {selectedUserId ? <Chat selectedUserId={selectedUserId} token={user.token} userId={user.userId} chat={chat} dispatch={dispatch} /> : <SelectChat selectedUserId={selectedUserId} />}
                     </Fragment>
                 )
