@@ -17,5 +17,6 @@ module.exports = {
             throw error;
         }
         return io;
-    }
+    },
+    connectedUsers: [],
 }

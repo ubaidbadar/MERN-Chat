@@ -28,6 +28,6 @@ const Chat = new Schema({
         }
     ],
 
-})
+}, { timestamps: true })
 
 module.exports = model('Chat', Chat);

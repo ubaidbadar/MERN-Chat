@@ -4,26 +4,27 @@ const User = require('../models/User');
 const generateError = require('../utility/generateError');
 
 exports.getChatUsers = (req, res, next) => {
-    Chat.find({ participants: req.userId }, { messages: { $elemMatch: { read: false } } })
+    Chat.find({ participants: req.userId }, { messages: { $elemMatch: { read: false }, sort: { createdAt: -1 } } })
         .populate({
             path: 'participants',
             select: 'displayName photoURL',
             match: { _id: { '$nin': [req.userId] } },
         })
+        .select('messages')
+        .sort({ updatedAt: -1 })
         .then(chat => {
-            console.log(chat);
-            const transformedChat = [];
-            chat.forEach(({ participants, messages }) => {
+            const transformedChat = chat.map(({ participants, messages }) => {
                 const unReadeMessagesLength = messages.length;
-                transformedChat.push({
+                return {
                     _id: participants[0]._id,
                     displayName: participants[0].displayName,
                     message: messages[unReadeMessagesLength - 1].message,
                     date: messages[unReadeMessagesLength - 1].date,
                     messageType: messages[unReadeMessagesLength - 1].messageType,
                     unReadeMessagesLength,
-                })
+                }
             })
+                .sort((b, a) => new Date(a.date).getTime() < new Date(b.date).getTime());
             res.status(200).json(transformedChat)
         })
         .catch(next);
@@ -81,7 +82,8 @@ exports.sendMessage = (req, res, next) => {
         })
         .then(_ => {
             message._id = new Date().getTime();
-            io.getIO().emit('chat', { receiverId, ...message })
+            const { socketId } = io.connectedUsers.find(user => user.userId === receiverId);
+            io.getIO().to(socketId).emit('chat', { receiverId, ...message });
             res.status(201).json(message);
         })
         .catch(next)

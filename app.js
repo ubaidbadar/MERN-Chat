@@ -9,6 +9,7 @@ const { json } = require('body-parser');
 const { errorHandler } = require('./controllers/errorHandler');
 const User = require('./routes/user');
 const Chat = require('./routes/chat');
+const { Socket } = require('dgram');
 
 app.use(cors(), json());
 
@@ -23,7 +24,13 @@ mongoose.connect(dbURL, { useUnifiedTopology: true, useNewUrlParser: true })
     .then(() => {
         const port = process.env.PORT || 5000;
         const server = app.listen(port, () => console.log(`Server is running on ${port}`));
-        const io = require('./socketIO').init(server);
-        io.on('connection', socket => console.log("Client connected"))
+        const socketIO = require('./socketIO');
+        const io = socketIO.init(server);
+        io.on('connection', socket => {
+            const socketId = socket.id;
+            socket.on('join', userId => socketIO.connectedUsers.push({ userId, socketId }));
+            socket.on('disconnect', () => socketIO.connectedUsers = socketIO.connectedUsers.filter(user => user.sockedId !== socketId));
+            socket.on('logout', () => socketIO.connectedUsers = socketIO.connectedUsers.filter(user => user.sockedId !== socketId))
+        })
     })
     .catch(err => console.log(err))
