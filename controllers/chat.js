@@ -4,25 +4,28 @@ const User = require('../models/User');
 const generateError = require('../utility/generateError');
 
 exports.getChatUsers = (req, res, next) => {
-    const { userId } = req;
-    Chat.find({ participants: userId }, { messages: { $elemMatch: { read: false } } })
+    Chat.find({ participants: req.userId }, { messages: { $elemMatch: { read: false } } })
         .populate({
             path: 'participants',
             select: 'displayName photoURL',
-            match: { _id: { '$nin': [userId] } },
+            match: { _id: { '$nin': [req.userId] } },
         })
         .select('messages')
         .sort({ updatedAt: -1 })
         .then(chat => {
             const transformedChat = chat.map(({ participants, messages }) => {
+                const messagesLength = messages.length;
                 let unReadeMessagesLength = 0;
-                messages.forEach(({ sender }) => sender !== userId && (unReadeMessagesLength += 1));
+                messages.forEach(({ sender }) => {
+                    sender.toString() !== req.userId && unReadeMessagesLength++;
+                    console.log(sender, req.userId);
+                });
                 return {
                     _id: participants[0]._id,
                     displayName: participants[0].displayName,
-                    message: messages[unReadeMessagesLength - 1].message,
-                    date: messages[unReadeMessagesLength - 1].date,
-                    messageType: messages[unReadeMessagesLength - 1].messageType,
+                    message: messages[messagesLength - 1].message,
+                    date: messages[messagesLength - 1].date,
+                    messageType: messages[messagesLength - 1].messageType,
                     unReadeMessagesLength,
                 }
             })

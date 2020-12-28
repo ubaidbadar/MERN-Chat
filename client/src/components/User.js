@@ -11,8 +11,10 @@ const User = ({ displayName, date, message, _id, className, unReadeMessagesLengt
             {!searchResult && (
                 <Fragment>
                     <div className='__date'>{toDate(date)}</div>
-                    <div className='__last-message'>{message} ab asjhkajs ahks ahsjakhs hajshka shjashk ashjkahs hkh</div>
-                    <div className='__unreade-messages-length'>{unReadeMessagesLength}</div>
+                    <div className='__message-details'>
+                        <div className='__last-message'>{message} ab asjhkajs ahks ahsjakhs hajshka shjashk ashjkahs hkh</div>
+                        {unReadeMessagesLength > 0 && <div className='__unreade-messages-length'>{unReadeMessagesLength}</div>}
+                    </div>
                 </Fragment>
             )}
         </Link>

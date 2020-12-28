@@ -19,21 +19,18 @@
         color: rgba($color: $black, $alpha: 0.7);
         font-size: 0.7em;
     }
-    .__last-message{
-        font-size: 0.85em;
-        color: $grey;
-        grid-column: span 2;
-    }
     .__user-image{
         margin-right: 0.55em;
     }
     &.active,&:hover{
         background: rgba($color: $primary, $alpha: 0.05);
     }
+    .__message-details{
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-column: span 2;
+    }
     .__unreade-messages-length{
-        position: absolute;
-        right: 0.6em;
-        bottom: 0.8em;
         background: $primary;
         color: #fff;
         width: 1.6em;
@@ -43,6 +40,9 @@
         border-radius: 1em;
         font-size: 0.8em;
         font-weight: bold;
+    }
+    .__last-message{
+        color: $grey;
     }
     &:not(.__searchResult){
         .__user-image{
